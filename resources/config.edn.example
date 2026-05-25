@@ -1,0 +1,3 @@
+{:api-base-url "https://api.example.com/v1"
+ :model        "gpt-4o"
+ :api-key      "your-api-key-here"}

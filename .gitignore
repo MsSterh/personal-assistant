@@ -1,0 +1,5 @@
+resources/config.edn
+.cpcache/
+.clj-kondo/.cache/
+target/
+*.class
