@@ -6,7 +6,7 @@ All three checks must pass. Run them in this order:
 
 ```bash
 # 1. Tests green
-clj -T:test
+clj -X:test
 
 # 2. No lint warnings
 clj -M:lint
@@ -19,7 +19,7 @@ Expected output for (3): a greeting line printed to stdout, process exits 0.
 
 ## Checklist
 
-- [ ] `clj -T:test` exits 0 with at least one test passing.
+- [ ] `clj -X:test` exits 0 with at least one test passing.
 - [ ] `clj -M:lint` exits 0 with no warnings.
 - [ ] `clj -M:fmt --check` exits 0 (no formatting violations).
 - [ ] Running `clj -M -m personal-assistant.core` prints a greeting to stdout.

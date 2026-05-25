@@ -1,0 +1,3 @@
+{:linters {:namespace-name-mismatch {:level :error}
+           :unused-namespace         {:level :warning}
+           :unused-binding           {:level :warning}}}
