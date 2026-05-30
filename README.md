@@ -29,6 +29,25 @@ Console application on Clojure for working with LLM that helps users to get answ
 - HEARTBEAT.md — checklist for cron jobs
 - TOOLS.md — additional information about user infrastructure (?)
 
+## Commands
+
+```bash
+# Run the app
+clj -M:repl
+
+# Run tests
+clj -X:test
+
+# Lint
+clj -M:lint
+
+# Check formatting
+clj -M:fmt
+
+# Fix formatting
+clj -M:fmt-fix
+```
+
 ## Tests
 
 All functionality must be covered by tests.
