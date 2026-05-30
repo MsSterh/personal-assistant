@@ -16,8 +16,9 @@
 
 ## 3. SOUL.md loading
 
-- [ ] Create `resources/SOUL.md` with a starter personality blurb.
-- [ ] Add `load-soul` function in `src/personal_assistant/context.clj` that slurps `SOUL.md` and returns a system message map.
+- [ ] Create `resources/SOUL.md` using YAML frontmatter format with `name`, `sex`, and `behavior` fields; the `behavior` value is the system-prompt text.
+- [ ] Add `clj-commons/clj-yaml` dependency to `deps.edn` for frontmatter parsing.
+- [ ] Add `load-soul` function in `src/personal_assistant/context.clj` that parses the YAML frontmatter and returns a system message map `{:role "system" :content <behavior>}`.
 - [ ] Prepend the system message to every messages vector before sending to the LLM.
 
 ## 4. Config wiring
