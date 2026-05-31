@@ -1,0 +1,6 @@
+# Memory
+
+Facts the assistant has accumulated over time.
+New facts are appended to daily notes under memory/ and can be promoted here.
+
+- Example fact: user prefers responses without unnecessary preamble.
