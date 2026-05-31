@@ -1,4 +1,7 @@
 resources/config.edn
+USER.md
+MEMORY.md
+memory/
 .lsp/
 .cpcache/
 .clj-kondo/.cache/
