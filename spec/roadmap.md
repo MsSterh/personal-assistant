@@ -38,7 +38,7 @@ Each phase is a shippable increment. A phase is done when its tests pass and the
 
 - Web search: query → list of result snippets (via a configurable search API).
 - Web page reader: URL → extracted plain text (HTML stripped).
-- Both tools available as LLM function calls; assistant decides when to invoke them.
+- Both tools reuse the LLM function-call registry & dispatch layer built in Phase 3; assistant decides when to invoke them.
 - Tests: fake HTTP responses, tool dispatch logic.
 
 ## Phase 5 — Heartbeat & cron jobs
