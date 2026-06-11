@@ -1,4 +1,6 @@
 resources/config.edn
+resources/config.edn.openai
+resources/config.edn.anthropic
 USER.md
 MEMORY.md
 memory/

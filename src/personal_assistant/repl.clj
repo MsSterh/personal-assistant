@@ -45,7 +45,7 @@
 
 (defn -main [& _args]
   (let [cfg        (config/load-config)
-        client     (llm/->HatoClient (:api-url cfg) (:api-key cfg) (:model cfg))
+        client     (llm/make-client (:api-url cfg) (:api-key cfg) (:model cfg))
         soul       (context/load-soul)
         mem-ctx    (memory/build-memory-context
                     (memory/load-user-profile "USER.md")
