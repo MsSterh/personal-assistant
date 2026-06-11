@@ -19,6 +19,8 @@
         (do
           (swap! history conj reply)
           (doseq [call calls]
+            (println (str "  [tool] " (get-in call [:function :name])
+                          " " (get-in call [:function :arguments])))
             (swap! history conj (registry/dispatch call)))
           (recur))
         reply))))
