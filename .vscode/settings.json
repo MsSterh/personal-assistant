@@ -1,3 +1,13 @@
 {
-  "cSpell.words": ["defn", "doseq", "doto", "Hato", "mkdirs", "println"]
+  "cSpell.words": [
+    "cparent",
+    "defn",
+    "defrecord",
+    "doseq",
+    "doto",
+    "Hato",
+    "mapv",
+    "mkdirs",
+    "println"
+  ]
 }
