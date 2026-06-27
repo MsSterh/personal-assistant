@@ -29,10 +29,28 @@ Console application on Clojure for working with LLM that helps users to get answ
 - HEARTBEAT.md — checklist for cron jobs
 - TOOLS.md — additional information about user infrastructure (?)
 
+## Setup
+
+Add the project's `bin/` directory to your `PATH` so you can run `aria` from anywhere:
+
+```bash
+# Add to ~/.zshrc (or ~/.bashrc), then restart your shell or `source` it
+export PATH="$HOME/projects/personal-assistant/bin:$PATH"
+```
+
+Alternatively, symlink the script into a directory already on your `PATH`:
+
+```bash
+ln -s "$HOME/projects/personal-assistant/bin/aria" /usr/local/bin/aria
+```
+
 ## Commands
 
 ```bash
-# Run the app
+# Run the app (from anywhere, once bin/ is on your PATH)
+aria
+
+# Or run directly from the project root
 clj -M:repl
 
 # Run tests
