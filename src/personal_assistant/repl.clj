@@ -25,23 +25,44 @@
           (recur))
         reply))))
 
+(def exit-commands #{"quit" "exit" "fin" "выход" "выйди" "уйди" "прочь"})
+
+(def clear-commands #{"/clear" "/почисть"})
+
 (defn run-loop [client system-msg]
   (let [history (atom [system-msg])]
     (loop []
       (print "> ")
       (flush)
       (when-let [line (read-line)]
-        (when-not (contains? #{"quit" "exit"} (str/trim line))
-          (swap! history conj {:role "user" :content line})
-          (let [reply   (chat-until-text client history)
-                content (or (:content reply) "")
-                facts   (memory/extract-new-facts content)
-                display (memory/strip-markers content)]
-            (when (seq facts)
-              (memory/append-facts-to-daily-note facts (memory/today-str)))
-            (swap! history conj (assoc reply :content display))
-            (println display))
-          (recur))))))
+        (let [trimmed (str/trim line)]
+          (cond
+            (contains? exit-commands trimmed)
+            nil
+
+            (contains? clear-commands trimmed)
+            (do
+              (reset! history [system-msg])
+              (println "Context cleared.")
+              (recur))
+
+            :else
+            (do
+              (swap! history conj {:role "user" :content line})
+              (let [reply   (chat-until-text client history)
+                    content (or (:content reply) "")
+                    facts   (memory/extract-new-facts content)
+                    display (memory/strip-markers content)]
+                (when (seq facts)
+                  (memory/append-facts-to-daily-note facts (memory/today-str)))
+                (swap! history conj (assoc reply :content display))
+                (println display)
+                (when (seq facts)
+                  (println)
+                  (println (str "🧠 Saved to memory (" (memory/today-str) "):"))
+                  (doseq [fact facts]
+                    (println (str "   • " fact)))))
+              (recur))))))))
 
 (defn -main [& _args]
   (let [cfg        (config/load-config)
