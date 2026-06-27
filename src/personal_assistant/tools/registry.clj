@@ -2,7 +2,8 @@
   "Maps the file tools to OpenAI-format function schemas and dispatches parsed
   `tool_calls` from the LLM to the matching Clojure fn."
   (:require [cheshire.core :as json]
-            [personal-assistant.tools.files :as files]))
+            [personal-assistant.tools.files :as files]
+            [personal-assistant.tools.web :as web]))
 
 ;; Each entry: tool name -> {:fn .. :schema ..}. The schema is the OpenAI
 ;; function-calling definition sent with the chat request; :fn takes a map of
@@ -78,7 +79,28 @@
                         :description "List the entries of a directory at any local path (not restricted to the working directory)."
                         :parameters {:type "object"
                                      :properties {:path (string-prop "Directory path to list. Defaults to the working directory.")}
-                                     :required []}}}}})
+                                     :required []}}}}
+
+   "web_search"
+   {:fn (fn [args] (web/search web/*http-client* args))
+    :schema {:type "function"
+             :function {:name "web_search"
+                        :description "Search the web (DuckDuckGo) for a query and return result titles, URLs, and snippets."
+                        :parameters {:type "object"
+                                     :properties {:query (string-prop "Search query.")}
+                                     :required ["query"]}}}}
+
+   "web_read"
+   {:fn (fn [args] (web/read-url web/*http-client* args))
+    :schema {:type "function"
+             :function {:name "web_read"
+                        :description "Fetch a web page by URL and return its content as readable plain text (default) or raw HTML."
+                        :parameters {:type "object"
+                                     :properties {:url (string-prop "URL of the page to fetch.")
+                                                  :format {:type "string"
+                                                           :enum ["text" "html"]
+                                                           :description "Return format: \"text\" (default, readable text) or \"html\" (raw markup)."}}
+                                     :required ["url"]}}}}})
 
 (def tool-defs
   "Vector of OpenAI-format function schemas to send with the chat request."
