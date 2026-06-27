@@ -3,7 +3,8 @@
             [clojure.test :refer [deftest is testing]]
             [hato.client :as hato]
             [personal-assistant.fake-client :refer [->FakeClient script-client]]
-            [personal-assistant.llm :as llm]))
+            [personal-assistant.llm :as llm]
+            [personal-assistant.tools.registry :as registry]))
 
 (deftest fake-client-round-trip
   (testing "FakeClient reply appears in conversation history"
@@ -111,6 +112,23 @@
         (is (= "read_file" (-> reply :tool_calls first :function :name)))
         ;; arguments come back as a JSON string, as the dispatch path expects
         (is (= "{\"path\":\"x\"}" (-> reply :tool_calls first :function :arguments)))))))
+
+(deftest anthropic-client-translates-web-tools
+  (testing "web tool schemas convert to Anthropic shape via the generic path"
+    (let [captured (atom nil)]
+      (with-redefs [hato.client/post
+                    (fn [_u opts]
+                      (reset! captured (json/parse-string (:body opts) true))
+                      {:body (json/generate-string {:content [{:type "text" :text "ok"}]})})]
+        (let [client (llm/->AnthropicClient "http://x" "key" "model")]
+          (llm/chat client [{:role "user" :content "hi"}] registry/tool-defs)
+          (let [by-name (into {} (map (juxt :name identity) (:tools @captured)))]
+            ;; OpenAI function schemas become {:name :description :input_schema}
+            (is (every? by-name ["web_search" "web_read"]))
+            (is (= "object" (-> by-name (get "web_read") :input_schema :type)))
+            (is (contains? (-> by-name (get "web_read") :input_schema :properties)
+                           :format))
+            (is (nil? (-> by-name (get "web_search") :function)))))))))
 
 (deftest scripted-client-returns-in-order
   (testing "scripted client returns each reply in turn"

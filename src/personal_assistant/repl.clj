@@ -59,7 +59,7 @@
                 (println display)
                 (when (seq facts)
                   (println)
-                  (println (str "🧠 Saved to memory (" (memory/today-str) "):"))
+                  (println (str "[memory] saved (" (memory/today-str) "):"))
                   (doseq [fact facts]
                     (println (str "   • " fact)))))
               (recur))))))))
